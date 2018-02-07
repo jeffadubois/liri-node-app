@@ -1,6 +1,5 @@
 # liri-node-app
-#![banner](https://user-images.githubusercontent.com/31745567/35255227-a7021194-ffb3-11e7-8b55-d61ea2fc8d74.JPG)
-
+##  Command Line is    node liri.js [my-tweets <user_name>] | [spotify-this-song <song_name>] | [movie-this <movie_name> ] | [do-what-it-says]
 ## Project Overview
 
 ## Requirements
