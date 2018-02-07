@@ -139,10 +139,7 @@ switch(process.argv[2]) {
              if (error) {
                   return console.log(error);
              }
-            // We will then print the contents of data
-             console.log(fdata);
-
-            // Then split it by commas (to make it more readable)
+             // Then split it by commas (to make it more readable)
              var dataArr = fdata.split(",");
 
 			 if (dataArr.length === 2){
@@ -156,7 +153,10 @@ switch(process.argv[2]) {
 					}
 					else if (action==="movie-this"){
 						getMovieInfo(parameter);
-					}						
+					}
+                    else{
+						console.log("Unknown action contained in random.txt.  The action was \"" + action + "\"");
+			        }						
 			 }
 			 else{
 				 console.log("invalid content in random.txt");
