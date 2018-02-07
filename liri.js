@@ -23,18 +23,9 @@ var getArtists = function(songItem) {
 }
 
 var getTweets = function(userId){
-}
 
+	   var params = {user_id: userId};
 
-switch(process.argv[2]) {
-    case 'my-tweets':
-	   var UserId = "jeffadubois";
-	   if (process.argv.length >  3){
-	       UserId = process.argv[3];
-	   }
-
-	   var params = {user_id: UserId};
-	   //params = {user_id: 'jeffadubois'};
        myTwitter.get('statuses/user_timeline', params ,function(err, tweets, response) {
        if (!err){
 			 console.log("\n\nTotal number of tweets is " + tweets.length.toString() + ".\n\nMy tweets are (a maximum of 20 tweets will be displayed):\n>>>>>>>>>>>>>>>>>>>>>>>>\n");
@@ -60,17 +51,13 @@ switch(process.argv[2]) {
 			  return console.log('Error occurred in acquiring tweets: ' + errj);
 		 }
 	   });
+}
 
-        break;
-    case  'spotify-this-song':
-	   var SongName = "The Sign";
-	   if (process.argv.length >  3){
-	       SongName = process.argv[3];
-	   }
-	   //console.log("in spotify-this-song action the song is " + SongName  );
-       spotify.search({ type: 'track', query: SongName, limit:10  }, function(err, data) {
+var getSongInfo = function(song_name){
+		   //console.log("in spotify-this-song action the song is " + SongName  );
+       spotify.search({ type: 'track', query: song_name, limit:10  }, function(err, data) {
        if (err) {
-         return console.log('Error occurred: ' + err);
+         return console.log('lsError occurred: ' + err);
        };
 	     var myJSON = JSON.stringify(data, null, 4);
 	     //console.log(myJSON);
@@ -91,22 +78,17 @@ switch(process.argv[2]) {
 				 + "\"\n\n  Artists: " + artistList 
 				 + "\n  Preview url: " 
 				 +  data.tracks.items[i].preview_url 
-				 + "\n  Album " 
+				 + "\n  Album: " 
 				 + data.tracks.items[i].album.name 
 				 + "\n>>>>>>>>>>>>>>>>>>>>>>>>\n";
 				 console.log(displayString);
 			 };
 		 });
+}
 
-        break;
-	case 'movie-this':
-	     //console.log("entered into movie-this");
-	     var movieName = "Mr. Nobody";
-	     if (process.argv.length >  3){
-	       movieName = process.argv[3];
-	     }	
-         var requestString = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=full&apikey=trilogy&tomatoes=true";		 
-         request(requestString, function(error, response, body) {
+var getMovieInfo = function(movie_name){
+	        var requestString = "http://www.omdbapi.com/?t=" + movie_name + "&y=&plot=full&apikey=trilogy&tomatoes=true";		 
+            request(requestString, function(error, response, body) {
               if (!error && response.statusCode === 200) {
 				  console.log("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 				  console.log("Movie Title: " + JSON.parse(body).Title);
@@ -118,17 +100,37 @@ switch(process.argv[2]) {
 				  console.log("Movie's plot is:\n  " + JSON.parse(body).Plot);
 				  console.log("\nMovie's actors were: " + JSON.parse(body).Actors);
 				  console.log("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");				  
-				  //console.log("body is");
-				  //var bodyj = JSON.stringify(body, null, 4);
-				  //console.log(bodyj);
+
               }
 			  else{
 				  var myError = JSON.stringify(error, null, 4);
 				  console.log("error found " + myError);
 			  }
           });
-         console.log("exited movie-this");
-	    //code block
+
+}
+
+switch(process.argv[2]) {
+    case 'my-tweets':
+	   var UserId = "jeffadubois";
+	   if (process.argv.length >  3){
+	       UserId = process.argv[3];
+	   }
+        getTweets(UserId);
+        break;
+    case  'spotify-this-song':
+	   var SongName = "The Sign";
+	   if (process.argv.length >  3){
+	       SongName = process.argv[3];
+	   }
+        getSongInfo(SongName);
+        break;
+	case 'movie-this':
+	     var movieName = "Mr. Nobody";
+	     if (process.argv.length >  3){
+	       movieName = process.argv[3];
+	     }
+         getMovieInfo(movieName);		 
 	    break;
 	case 'do-what-it-says':
         fs.readFile("random.txt", "utf8", function(error, fdata) {
