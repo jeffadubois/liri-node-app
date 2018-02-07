@@ -66,7 +66,7 @@ var getSongInfo = function(song_name){
 		 if (data.tracks.items.length < 10){
 			 numSongsToBeDisplayed = data.tracks.items.length;
 		 };
-         console.log("\n\nDisplaying " + numSongsToBeDisplayed + " songs (maximum of 10 songs are displayed) related to \"" + SongName + "\"" + ":\n\n>>>>>>>>>>>>>>>>>>>>>>>>\n");
+         console.log("\n\nDisplaying " + numSongsToBeDisplayed + " songs (maximum of 10 songs are displayed) related to \"" +  + "\"" + song_name + ":\n\n>>>>>>>>>>>>>>>>>>>>>>>>\n");
          var displayNum = 0;
          var displayString = "";		 
          for (var i = 0; i < numSongsToBeDisplayed; i++) {
@@ -140,10 +140,27 @@ switch(process.argv[2]) {
                   return console.log(error);
              }
             // We will then print the contents of data
-             console.log(data);
+             console.log(fdata);
 
             // Then split it by commas (to make it more readable)
-             var dataArr = data.split(",");
+             var dataArr = fdata.split(",");
+
+			 if (dataArr.length === 2){
+					var action = dataArr[0];
+					var parameter = dataArr[1];
+					if (action==="my-tweets"){
+						getTweets(parameter);
+					}
+					else if (action==="spotify-this-song"){
+						getSongInfo(parameter);
+					}
+					else if (action==="movie-this"){
+						getMovieInfo(parameter);
+					}						
+			 }
+			 else{
+				 console.log("invalid content in random.txt");
+			 }
 			 
 		});		
 	    break;
